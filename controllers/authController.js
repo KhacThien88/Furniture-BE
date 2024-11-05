@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
 
   try {
     // Mã hóa mật khẩu
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Tạo người dùng mới
     const newUser = await User.create({
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: "User not found!!!" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
