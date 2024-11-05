@@ -1,13 +1,13 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 exports.register = async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
 
   // Kiểm tra mật khẩu có trùng khớp không
   if (password !== confirmPassword) {
-    return res.status(400).json({ message: 'Passwords do not match' });
+    return res.status(400).json({ message: "Passwords do not match" });
   }
 
   try {
@@ -19,19 +19,19 @@ exports.register = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      role: role || 'user',
+      role: role || "user",
     });
 
     // Tạo token đăng nhập
     const token = jwt.sign(
       { userId: newUser._id, role: newUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: '72h' }
+      { expiresIn: "72h" }
     );
 
     // Trả về phản hồi thành công
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       user: {
         id: newUser._id,
         username: newUser.username,
@@ -43,39 +43,39 @@ exports.register = async (req, res) => {
   } catch (error) {
     // Kiểm tra lỗi trùng lặp khóa MongoDB (E11000)
     if (error.code === 11000 && error.keyValue.username) {
-      return res.status(400).json({ message: 'Username đã tồn tại' });
+      return res.status(400).json({ message: "Username đã tồn tại" });
     }
     if (error.code === 11000 && error.keyValue.email) {
-      return res.status(400).json({ message: 'Email đã tồn tại' });
+      return res.status(400).json({ message: "Email đã tồn tại" });
     }
     // Lỗi khác
-    res.status(500).json({ message: 'Lỗi server: ' + error.message });
+    res.status(500).json({ message: "Lỗi server: " + error.message });
   }
 };
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log('email: ', email);
+  console.log("email: ", email);
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found!!!' });
+      return res.status(404).json({ message: "User not found!!!" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '72h' }
+      { expiresIn: "72h" }
     );
     res.status(200).json({
-      message: 'Logged in successfully',
+      message: "Logged in successfully",
       token,
       user: {
         id: user._id,
