@@ -1,9 +1,9 @@
-const Product = require('../models/productModel');
+const productService = require('../services/productService');
 
 // Lấy tất cả sản phẩm
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await productService.getAllProducts();
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -13,7 +13,7 @@ const getAllProducts = async (req, res) => {
 // Lấy sản phẩm theo ID
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await productService.getProductById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
