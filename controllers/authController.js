@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
   console.log('email: ', email);
 
   try {
-    const user = await User.findOne({ email });
+    const user = await userService.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found!!!' });
     }
