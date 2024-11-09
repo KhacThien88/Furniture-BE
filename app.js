@@ -18,10 +18,10 @@ connectDB()
       const count = await Product.countDocuments({});
       if (count === 0) {
         // Nếu collection trống, thêm dữ liệu mẫu từ file JSON
-        const data = JSON.parse(
+        const productData = JSON.parse(
           fs.readFileSync('./data/products.json', 'utf-8')
         );
-        await Product.insertMany(data.products);
+        await Product.insertMany(productData);
         console.log('Sample data inserted');
       }
 
@@ -29,8 +29,10 @@ connectDB()
       // Kiểm tra số lượng tài liệu trong collection User
       const countUser = await User.countDocuments({});
       if (countUser === 0) {
-        const data = JSON.parse(fs.readFileSync('./data/users.json', 'utf-8'));
-        await User.insertMany(data);
+        const userData = JSON.parse(
+          fs.readFileSync('./data/users.json', 'utf-8')
+        );
+        await User.insertMany(userData);
         console.log('Sample users data inserted');
       }
     } catch (err) {
