@@ -3,13 +3,12 @@ const fs = require('fs');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const connectDB = require('./config/db');
-const Product = require('./models/productModel'); // Import model Product
+const Product = require('./models/productModel');
+const User = require('./models/userModel');
 const cors = require('cors');
 
 const app = express();
-
 app.use(cors());
-
 app.use(express.json());
 
 connectDB()
@@ -24,6 +23,15 @@ connectDB()
         );
         await Product.insertMany(data.products);
         console.log('Sample data inserted');
+      }
+
+      // insert users sample data
+      // Kiểm tra số lượng tài liệu trong collection User
+      const countUser = await User.countDocuments({});
+      if (countUser === 0) {
+        const data = JSON.parse(fs.readFileSync('./data/users.json', 'utf-8'));
+        await User.insertMany(data);
+        console.log('Sample users data inserted');
       }
     } catch (err) {
       console.error('Error inserting sample data:', err);

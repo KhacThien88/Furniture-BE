@@ -7,13 +7,8 @@ const productSchema = new mongoose.Schema({
   price: Number,
   category: String,
   images: [String],
-  reviews: [
-    {
-      user: String,
-      rating: Number,
-      comment: String,
-    },
-  ],
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: Date,
 });
 
 module.exports = mongoose.model('Product', productSchema);
