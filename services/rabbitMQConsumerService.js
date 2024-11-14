@@ -1,6 +1,6 @@
 const amqp = require("amqplib");
 
-const RABBITMQ_URL = "amqp://localhost";
+const RABBITMQ_URL = "amqp://3.107.206.208";
 const RESPONSE_QUEUE_NAME = "response-queue";
 
 let connection;

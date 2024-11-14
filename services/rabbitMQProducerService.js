@@ -1,6 +1,6 @@
 const amqp = require("amqplib");
 
-const RABBITMQ_URL = "amqp://localhost";
+const RABBITMQ_URL = "amqp://3.107.206.208";
 const QUEUE_NAME = "example-queue";
 
 async function sendToQueue(message) {
