@@ -31,8 +31,6 @@ async function waitForResponse() {
   return new Promise((resolve, reject) => {
     try {
       console.log("Waiting for response...");
-
-      // Đăng ký tiêu thụ và lấy consumerTag khi thành công
       channel
         .consume(
           RESPONSE_QUEUE_NAME,

@@ -1,9 +1,8 @@
 const amqp = require("amqplib");
 
 const RABBITMQ_URL = "amqp://3.107.206.208";
-const QUEUE_NAME = "example-queue";
 
-async function sendToQueue(message) {
+async function sendToQueue(message, QUEUE_NAME) {
   try {
     const connection = await amqp.connect(RABBITMQ_URL);
     const channel = await connection.createChannel();
